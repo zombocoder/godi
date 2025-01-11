@@ -4,6 +4,7 @@ run:
 
 # all available settings of specific linters
 linters-settings:
+  
   errcheck:
     # report about not checking of errors in type assetions: `a := b.(MyStruct)`;
     # default is false: such cases aren't reported by default.
@@ -28,10 +29,8 @@ linters-settings:
 
 linters:
   enable:
-    - megacheck
     - govet
   disable:
-    - maligned
     - prealloc
   disable-all: false
   presets:

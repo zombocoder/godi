@@ -18,9 +18,15 @@ jobs:
     runs-on: ${{ matrix.platform }}
     steps:
       - uses: actions/checkout@v2
-      - uses: golangci/golangci-lint-action@v2
+      - name: Set up Go environment
+        run: |
+          go clean -cache
+          go clean -modcache
+          go mod tidy
+          go mod vendor
+      - uses: golangci/golangci-lint-action@v3
         with:
-          version: v1.46
+          version: latest
   test:
     name: Unit test
     timeout-minutes: 10
