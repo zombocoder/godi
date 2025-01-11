@@ -60,9 +60,10 @@ func TestResolve(t *testing.T) {
 	}
 
 	// Verify that resolving a non-pointer target returns an error
-	err = container.Resolve(mockDependency)
-	if err == nil {
-		t.Errorf("expected error when resolving a non-pointer target, got nil")
+	nonPointer := MockService{}
+	err = container.Resolve(nonPointer) // Pass a struct, not a pointer
+	if err == nil || err.Error() != "target must be a pointer" {
+		t.Errorf("expected error 'target must be a pointer', got %v", err)
 	}
 
 	// Verify behavior when the inject tag is empty
@@ -75,8 +76,8 @@ func TestResolve(t *testing.T) {
 	// Verify error handling for non-struct pointers
 	someFunc := func(t *testing.T) {}
 	err = container.Resolve(&someFunc)
-	if err == nil {
-		t.Errorf("expected error when resolving a non-struct pointer, got nil")
+	if err == nil || err.Error() != "target must be a pointer to a struct" {
+		t.Errorf("expected error 'target must be a pointer to a struct', got %v", err)
 	}
 }
 

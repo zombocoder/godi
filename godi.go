@@ -36,7 +36,10 @@ func (c *Container) Register(name string, instance interface{}) {
 // Resolve injects the dependencies into the target struct
 func (c *Container) Resolve(target interface{}) error {
 	val := reflect.ValueOf(target)
-	if val.Kind() != reflect.Ptr || val.Elem().Kind() != reflect.Struct {
+	if val.Kind() != reflect.Ptr {
+		return fmt.Errorf("target must be a pointer")
+	}
+	if val.Elem().Kind() != reflect.Struct {
 		return fmt.Errorf("target must be a pointer to a struct")
 	}
 
